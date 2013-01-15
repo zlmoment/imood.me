@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block mystyle %}
+      body {
+      	background: url({{url_for('static', filename='img/bg/2.jpg')}});
+      }
+      .form-signup {
+        max-width: 300px;
+        margin: 250px auto 20px auto;
+      }
+      .form-signup .checkbox {
+        margin-bottom: 10px;
+      }
+      .form-signup input[type="text"],
+      .form-signup input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+      }
+
+{% endblock %}
+{% block container %}
+
+<form class="form-signup" method="post" action="/register">
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    <div class="alert alert-error" style="margin-top:10px;">
+	    <button type="button" class="close" data-dismiss="alert">&times;</button>
+	    {% for message in messages %}
+	    {{ message }}
+	    {% endfor %}
+	    </div>
+	  {% endif %}
+	{% endwith %}
+  <input type="text" class="input-block-level" placeholder="用户名" name="username" value="{{user.username}}">
+  <input type="password" class="input-block-level" placeholder="密码" name="password">
+  <input type="password" class="input-block-level" placeholder="确认密码" name="repassword">
+  <input type="text" class="input-block-level" placeholder="邮箱" name="email" value="{{user.email}}">
+  <select class="selectpicker input-block-level" name="privacy">
+     <option value="1">请选择谁可以看到您的日记：所有人</option>
+     <option value="0">仅自己</option>
+  </select>
+  <label class="checkbox" style="color:white;">
+    <input type="checkbox" value="{{ true }}" name="agreeornot" {% if user.agreeornot == 'True' %}checked="checked"{% endif %}><small>我已认真阅读并同意小时光的 《服务条款》</small>
+  </label>
+  <button class="btn btn-primary btn-large pull-right" type="submit">注 册</button>
+  <p class="pull-right" style="clear:both;margin-top:7px;"><a href="/" style="color:white;"><small><< 已有账号，返回登录</small></a></p>
+</form>
+
+{% endblock %}
+

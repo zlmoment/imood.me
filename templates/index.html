@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block mystyle %}
+      body {
+      	background: url({{url_for('static', filename='img/bg/2.jpg')}});
+      }
+      .form-signin {
+        max-width: 300px;
+        margin: 300px auto 20px auto;
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+        margin-bottom: 10px;
+      }
+      .form-signin input[type="text"],
+      .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+      }
+
+{% endblock %}
+
+{%block homeactive%}class="active"{%endblock%}
+
+{% block container %}
+
+<form class="form-signin" method="post" action="/login">
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    <div class="alert alert-error" style="margin-top:10px;">
+	    <button type="button" class="close" data-dismiss="alert">&times;</button>
+	    {% for message in messages %}
+	    {{ message }}
+	    {% endfor %}
+	    </div>
+	  {% endif %}
+	{% endwith %}
+  <input type="text" class="input-block-level" placeholder="用户名" name="username">
+  <input type="password" class="input-block-level" placeholder="密码" name="password">
+  <label class="checkbox" style="color:white;">
+    <input type="checkbox" value="remember-me" name="remember"><small>两周内自动登录</small>
+  </label>
+  <button class="btn btn-primary btn-large pull-right" type="submit">登 陆</button>
+  <p class="pull-right" style="clear:both;margin-top:7px;"><a href="/register" style="color:white;"><small>还没有账号？立即注册 >></small></a></p>
+</form>
+
+{% endblock %}
+

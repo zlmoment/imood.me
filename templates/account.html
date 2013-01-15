@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block windowtitle %}账号设置{% endblock%}
+{%block accountactive%}class="active"{%endblock%}
+
+{% block mystyle %}
+{% endblock %}
+
+{% block container %}
+<div class="tabbable" style="margin:20px 0;">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab1" data-toggle="tab">个人设置</a></li>
+    <li><a href="#tab2" data-toggle="tab">隐私设置</a></li>
+  </ul>
+  {% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    <div class="alert alert-success" style="margin-top:10px;">
+	    <button type="button" class="close" data-dismiss="alert">&times;</button>
+	    {% for message in messages %}
+	    {{ message }}
+	    {% endfor %}
+	    </div>
+	  {% endif %}
+	{% endwith %}
+  <div class="tab-content">
+    <div class="tab-pane active" id="tab1">
+        <div class="span5" style="margin:0;">
+			<div class="avatar">
+				<img src="{{url_for('static', filename='img/avatar/'+g.user['avatar'])}}" />
+				<form class="form-horizontal" action="/account/upload" enctype="multipart/form-data" method="post" id="avatarform">
+					<div class="fileupload fileupload-new" data-provides="fileupload" style="margin:20px 0;">
+					  <div class="input-append">
+					    <div class="uneditable-input span3">
+					    	<i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span>
+					    </div>
+					    <span class="btn btn-file">
+					    	<span class="fileupload-new">选择头像文件</span>
+					    	<span class="fileupload-exists">重新选择</span>
+					    	<input class="text" type="file" name="upload_file" id="fileselect" onchange="checkFileType(this);">
+					    </span>
+					    <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">移除</a>
+					  </div>
+					</div>
+					<div class="control-group">
+						<a href="javascript:submitform_avatarform()" class="btn btn-primary" id="avatarbtn">更换头像</a>
+					</div>
+					<script type="text/javascript">
+					function checkFileType(ths){
+						if (ths.value == "") {
+							alert("请选择上传.jpg/.png文件");
+							return false;
+						} else {
+							if (!/\.(jpg|png|JPG|PNG)$/.test(ths.value)) {
+								alert("上传文件类型必须是.jpg/.png文件");
+								ths.value = "";
+								return false;
+							}
+						}
+						document.getElementById('uploadinput').innerText = ths.value
+						return true;
+					}
+					function submitform_avatarform(){
+						if (document.getElementById('fileselect').value.length==0)
+						{
+							alert ("请选择上传.jpg/.png文件");
+							document.getElementById('fileselect').focus();
+						}
+						else
+						{
+							document.getElementById('avatarform').submit();
+							document.getElementById('avatarbtn').innerText = "正在更换中，请稍等..."
+						}
+					} 
+					</script>
+				</form>
+			</div>
+		</div>
+		<div class="span7">
+			<form method="post" action="/account/personal" id="personal_form" class="form-horizontal">
+			  <div class="control-group">
+			    <label class="control-label" for="username">用户名(不可更改)</label>
+			    <div class="controls">
+			      <input type="text" id="username" value="{{g.user['username']}}" name="username" disabled="disabled">
+			    </div>
+			  </div>
+			  <div class="control-group">
+			    <label class="control-label" for="nickname">昵称</label>
+			    <div class="controls">
+			      <input type="text" id="nickname" value="{{g.user['nickname']}}" name="nickname">
+			    </div>
+			  </div>
+			  <div class="control-group">
+			    <label class="control-label" for="solo">签名档</label>
+			    <div class="controls">
+			      <input type="text" id="solo" value="{{g.user['solo']}}" name="solo">
+			    </div>
+			  </div>
+			  <div class="control-group">
+			    <label class="control-label" for="email">E-mail</label>
+			    <div class="controls">
+			      <input type="text" id="email" value="{{g.user['email']}}" name="email">
+			    </div>
+			  </div>
+			  <div class="control-group">
+			    <label class="control-label" for="domain">域名</label>
+			    <div class="controls">
+			      <input type="text" id="domain" value="http://imood.me/{{g.user['url']}}" name="domain" disabled="disabled">
+			    </div>
+			  </div>
+			  <div class="control-group">
+			    <div class="controls">
+			      <a type="submit" class="btn" id="personal_btn" href="javascript:submitform_personal();">更新</a>
+			      <script type="text/javascript">
+			      function submitform_personal(){
+						document.getElementById('personal_form').submit();
+				  } 
+			      </script>
+			    </div>
+			  </div>
+			</form>
+		</div>
+    </div>
+    <div class="tab-pane" id="tab2">
+    <form action="/account/privacy" method="post" id="privacy_form">
+    	<p>请选择那些人可以看到你的日记：</p>
+	    <select class="selectpicker" name="privacy">
+	      <option value="1" {%if g.user.private == 1%}selected{%endif%}>所有人</option>
+	      <option value="0" {%if g.user.private == 0%}selected{%endif%}>仅自己</option>
+	    </select>
+	    <div class="clearfix"></div>
+	    <a class="btn" type="button" href="javascript:submit_privacy();">更 新</a>
+	    <script type="text/javascript">
+        function submit_privacy(){
+		  	document.getElementById('privacy_form').submit();
+	    } 
+        </script>
+	</form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block footjs %}
+<link href="{{url_for('static', filename='css/bootstrap-fileupload.min.css')}}" rel="stylesheet" media="screen">
+<script src="{{url_for('static', filename='js/bootstrap-fileupload.min.js')}}"></script>
+{% endblock%}

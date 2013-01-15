@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block windowtitle %}{{ config.SITE_TITLE }}{% endblock%}</title>
+    <meta charset="utf-8">
+    <meta name="description" content="{% block pagedesc %}{{ config.SITE_DESC }}{% endblock %}">
+    {% block meta %}{% endblock %}
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}">
+    <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet" media="screen">
+    <style>
+	.myblock{display:block;clear:both;height:2px;}
+	{% block mystyle %}{% endblock %}
+	</style>
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">小时光</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li {%block homeactive%}{%endblock%}><a href="/">首页</a></li>
+              <li {%block myhomeactive%}{%endblock%}><a href="/{{ g.user['url'] }}">我的主页</a></li>
+            </ul> 
+          </div>
+          <div class="nav-collapse pull-right">
+            <ul class="nav">
+              {% if not session.logged_in %}
+              <li><a href="/register">注册</a></li>
+              {% else %}
+              <li {%block diaryaddactive%}{%endblock%}><a href="/diary/add">写日记</a></li>
+              <li {%block accountactive%}{%endblock%}><a href="/account"><small>设置</small></a></li>
+              <li><a href="/logout"><small>注销</small></a></li>
+              {% endif %}
+            </ul> 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container" style="padding-top:50px;">
+    {% block container %}{% endblock%}
+    </div>
+	
+    <script src="{{url_for('static', filename='js/jquery-1.8.2.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+  
+	<footer class="footer navbar-fixed-bottom">
+	  	<div class="container" style="text-align: center;">
+	  		<small>@2013</small>
+	  	</div>
+	</footer>
+  {% block footjs %}{% endblock%}
+  </body>
+</html>

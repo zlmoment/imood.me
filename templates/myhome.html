@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{%block myhomeactive%}class="active"{%endblock%}
+
+{% block mystyle %}
+body {
+ 	background: url({{url_for('static', filename='img/paper.jpg')}}) repeat fixed;
+}
+.avatar,.content{margin:20px 0;}
+.avatar img {
+	background-color: #ffffff;
+	padding: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px solid #dedede;
+	width:360px;
+}
+.content h3{
+	font-weight:normal;
+	font-size:20px;
+	border-bottom:1px solid black;
+	margin-bottom:25px;
+}
+.solo{
+	margin-top:8px;
+	word-wrap: break-word; 
+	word-break: normal; 
+}
+{% endblock %}
+
+{% block container %}
+
+<div class="span5" style="margin:0;">
+	<div class="avatar">
+		<img src="{{url_for('static', filename='img/avatar/'+g.user['avatar'])}}" />
+		<p class="solo">{{g.user['solo']}}</p>
+	</div>
+</div>
+<div class="span7">
+	<div class="content">
+		<h3>{{result.pubtime}}</h3>
+		<p>
+			{% for c in result.content %}
+			{{c}}
+			<br>
+			{% endfor %}
+		</p>
+		<p class="pull-right">-- {{g.user['username']}}</p>
+	</div>
+</div>
+
+{% endblock %}
+
