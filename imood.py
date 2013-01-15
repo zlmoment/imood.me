@@ -25,7 +25,7 @@ def connect_db():
     try:
         conn = mysql.connector.connect(user='root', password='', host='localhost', database='imood', charset="utf8")
     except Exception, e:
-        print "Failed connection!", e
+        #print "Failed connection!", e
         return
     return conn
 
@@ -142,7 +142,7 @@ def login():
         session['logged_in'] = True
         session['username'] = username
         g.user = getCurrentUser()
-        print g.user
+        #print g.user
         if remember == "remember-me":
             resp = make_response(redirect('/'+g.user['url']))
             resp.set_cookie('username', username, max_age = 1209000)
